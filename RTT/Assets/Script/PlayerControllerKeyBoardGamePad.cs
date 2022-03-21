@@ -5,10 +5,25 @@ using UnityEngine;
 public class PlayerControllerKeyBoardGamePad : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5.0f;
+    [SerializeField] private float normalSpeed = 5.0f;
+    [SerializeField] private float sprintSpeed = 10.0f;
     [SerializeField] private float turnSpeed = 15;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private bool canSprint = true;
+    public KeyCode sprintHotkey = KeyCode.LeftShift;
+    [SerializeField] private bool canDash = true;
+    public bool dashTrigger = false;
+    public KeyCode dashHotkey = KeyCode.Space;
+    public float dashStatrTime;
+    public float dashSpeed = 150.0f;
+    public float dashTime = 0.25f;
+    private Vector3 dashDir;
     private Vector3 input;
     private Vector3 rawInput;
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -17,12 +32,44 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
             rb.velocity = Vector3.zero;
         GetInput();
         LookDir();
+        if (canSprint)
+            Sprint();
     }
 
     void GetInput()
     {
-        rawInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        input = rawInput.normalized;
+        //Move Direction Input
+        if(!dashTrigger)
+        {
+            rawInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            input = rawInput.normalized;
+        }
+
+        //Dash Input
+        if (Input.GetKeyDown(dashHotkey))
+        {
+            dashTrigger = true;
+            dashStatrTime = Time.time;
+        }
+    }
+
+    void Sprint()
+    {
+        if (Input.GetKey(sprintHotkey))
+            moveSpeed = sprintSpeed;
+        else
+            moveSpeed = normalSpeed;
+    }
+    void Dash()
+    {
+        if (Time.time < dashStatrTime + dashTime)
+        {
+            rb.MovePosition(transform.position + transform.forward * dashSpeed * Time.deltaTime);
+        }
+        else
+        {
+            dashTrigger = false;
+        }
     }
 
     void LookDir()
@@ -42,6 +89,13 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.MovePosition(transform.position + transform.forward * input.magnitude * moveSpeed * Time.deltaTime);
+        if (dashTrigger)
+        {
+            Dash();
+        }
+        else
+        {
+            rb.MovePosition(transform.position + transform.forward * input.magnitude * moveSpeed * Time.deltaTime);
+        }
     }
 }
