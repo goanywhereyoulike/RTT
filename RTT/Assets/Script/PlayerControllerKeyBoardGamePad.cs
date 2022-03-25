@@ -20,9 +20,11 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
     private Vector3 dashDir;
     private Vector3 input;
     private Vector3 rawInput;
+    [SerializeField] private Animator playerAnimator;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,6 +36,13 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
         LookDir();
         if (canSprint)
             Sprint();
+        SetAnimation();
+    }
+
+    void SetAnimation()
+    {
+        playerAnimator.SetBool("IsWalk", rb.velocity.magnitude > 0);
+        playerAnimator.SetBool("IsRun", moveSpeed == sprintSpeed);
     }
 
     void GetInput()
