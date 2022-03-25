@@ -41,10 +41,10 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
 
     void SetAnimation()
     {
-        bool isWalk = rb.velocity.magnitude > 0;
-        bool isRun = moveSpeed == sprintSpeed || dashTrigger;
-        playerAnimator.SetBool("IsWalk", isWalk);
-        playerAnimator.SetBool("IsRun", isRun);
+        bool isMoving = rb.velocity.magnitude > 0;
+        bool isRun = moveSpeed == sprintSpeed && isMoving;
+        playerAnimator.SetBool("IsWalk", isMoving);
+        playerAnimator.SetBool("IsRun", isRun || dashTrigger);
     }
 
     void GetInput()
@@ -76,6 +76,7 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
         if (Time.time < dashStatrTime + dashTime)
         {
             rb.MovePosition(transform.position + transform.forward * dashSpeed * Time.deltaTime);
+            playerAnimator.SetBool("IsRun", true);
         }
         else
         {
