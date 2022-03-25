@@ -917,7 +917,7 @@ MonoBehaviour:
   dashTrigger: 0
   dashHotkey: 32
   dashStatrTime: 0
-  dashSpeed: 50
+  dashSpeed: 100
   dashTime: 0.25
   playerAnimator: {fileID: 0}
 --- !u!54 &522519436

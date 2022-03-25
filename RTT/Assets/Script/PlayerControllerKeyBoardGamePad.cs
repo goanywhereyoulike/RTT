@@ -41,8 +41,10 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
 
     void SetAnimation()
     {
-        playerAnimator.SetBool("IsWalk", rb.velocity.magnitude > 0);
-        playerAnimator.SetBool("IsRun", moveSpeed == sprintSpeed);
+        bool isWalk = rb.velocity.magnitude > 0;
+        bool isRun = moveSpeed == sprintSpeed || dashTrigger;
+        playerAnimator.SetBool("IsWalk", isWalk);
+        playerAnimator.SetBool("IsRun", isRun);
     }
 
     void GetInput()
