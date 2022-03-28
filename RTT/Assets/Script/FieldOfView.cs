@@ -6,9 +6,12 @@ using PathCreation;
 
 public class FieldOfView : MonoBehaviour
 {
-    public PathCreator pathCreator;
+    float detectSpeed = 1.0f;
+    public float timeLimit = 3.0f;
+    float timeCount = 0.0f;
+    PathCreator pathCreator;
+    Enemy enemy;
     EnemyNav Enav;
-    [SerializeField]
     PathFollower phf;
     [SerializeField]
     Material material;
@@ -38,6 +41,7 @@ public class FieldOfView : MonoBehaviour
         viewMeshFilter.mesh = viewMesh;
         phf = GetComponent<PathFollower>();
         Enav = GetComponent<EnemyNav>();
+        enemy = GetComponent<Enemy>();
         pathCreator = FindObjectOfType<PathCreator>();
         StartCoroutine("FindTargetsWithDelay", .1f);
     }
@@ -51,29 +55,58 @@ public class FieldOfView : MonoBehaviour
             FindVisibleTargets();
         }
     }
+    private void Update()
+    {
+        foreach (var target in visibleTargets)
+        {
+            if (target.gameObject.GetComponent<PlayerController>().BeenDeteced)
+            {
+                detectSpeed = 2.0f;
+            }
+
+        }
+
+        if (FindVisibleTargets())
+        {
+            timeCount += Time.deltaTime * detectSpeed;
+
+        }
+        else 
+        {
+            if (timeCount > 0.0f)
+            {
+                timeCount -= Time.deltaTime;
+            }
+        
+        }
+
+        if (timeCount >= timeLimit)
+        {
+            timeCount = timeLimit;
+            Enav.ChasePlayer = true;
+
+        }
+        else if (timeCount <= 0.0f)
+        {
+            timeCount = 0.0f;
+
+
+        }
+
+        material.color = Color.Lerp(Color.green, Color.red, timeCount / timeLimit);
+    }
 
     void LateUpdate()
     {
         DrawFieldOfView();
     }
 
-    void FindVisibleTargets()
+    bool FindVisibleTargets()
     {
-        //if ((transform.position - pathCreator.path.GetPoint(1)).sqrMagnitude > 0.1f)
-        //{
-        //    Transform trans = transform;
-        //    trans.position= pathCreator.path.GetPoint(1);
-        //    Enav.target = trans;
-        //}
-        //else
-        //{
-        //    Enav.ChasePlayer = false;
-        //    phf.enabled = true;
-        //}
-        
+        bool FindTarget = false;
         Enav.ChasePlayer = false;
-        Color color = new Color(0, 255, 0, 0.3f);
-        material.color = color;
+        //Color color = new Color(0, 255, 0, 0.3f);
+        //material.color = color;
         visibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
@@ -87,14 +120,22 @@ public class FieldOfView : MonoBehaviour
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
-                    Color color2 = new Color(255, 0, 0, 0.3f);
-                    material.color = color2;
+                    PlayerController player = target.gameObject.GetComponent<PlayerController>();
+                    player.DetectedNum++;
+                    player.DetectedEnemy = enemy.index;
+                    player.BeenDeteced = true;
+                    //Color color2 = new Color(255, 0, 0, 0.3f);
+                    //material.color = color2;
+                    FindTarget = true;
                     phf.enabled = false;
-                    Enav.ChasePlayer = true;
+                  
                 }
 
             }
+           
         }
+
+        return FindTarget;
     }
 
     void DrawFieldOfView()
