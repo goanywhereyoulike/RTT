@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerControllerKeyBoardGamePad : MonoBehaviour
 {
+    
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private float normalSpeed = 5.0f;
     [SerializeField] private float sprintSpeed = 10.0f;
@@ -13,6 +14,7 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
     public KeyCode sprintHotkey = KeyCode.LeftShift;
     [SerializeField] private bool canDash = true;
     public bool dashTrigger = false;
+    public bool BeenDeteced = false;
     public KeyCode dashHotkey = KeyCode.Space;
     public float dashStatrTime;
     public float dashSpeed = 150.0f;

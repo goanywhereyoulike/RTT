@@ -59,7 +59,7 @@ public class FieldOfView : MonoBehaviour
     {
         foreach (var target in visibleTargets)
         {
-            if (target.gameObject.GetComponent<PlayerController>().BeenDeteced)
+            if (target.gameObject.GetComponent<PlayerControllerKeyBoardGamePad>().BeenDeteced)
             {
                 detectSpeed = 2.0f;
             }
@@ -120,9 +120,7 @@ public class FieldOfView : MonoBehaviour
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
-                    PlayerController player = target.gameObject.GetComponent<PlayerController>();
-                    player.DetectedNum++;
-                    player.DetectedEnemy = enemy.index;
+                    PlayerControllerKeyBoardGamePad player = target.gameObject.GetComponent<PlayerControllerKeyBoardGamePad>();
                     player.BeenDeteced = true;
                     //Color color2 = new Color(255, 0, 0, 0.3f);
                     //material.color = color2;
