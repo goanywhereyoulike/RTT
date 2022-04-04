@@ -1085,14 +1085,23 @@ MonoBehaviour:
     _bezierPath:
       points:
       - {x: -23.684559, y: 0, z: -20.168068}
-      - {x: -21.196697, y: -0.21647656, z: -22.054379}
-      - {x: 1.9728584, y: 1.0238543, z: 1.6553955}
-      - {x: 5.257385, y: 0.5388708, z: 3.682888}
-      - {x: 7.269373, y: 0.24178663, z: 4.9248605}
-      - {x: 0.28393623, y: 0.821682, z: 5.658041}
+      - {x: -21.476175, y: -0.19215824, z: -21.842476}
+      - {x: -1.8451743, y: 1.3968897, z: -7.1759253}
+      - {x: 3.7225447, y: 0.5388641, z: -1.0253525}
+      - {x: 4.4271574, y: 0.4302783, z: -0.24697745}
+      - {x: 5.8359447, y: 0.6994362, z: 1.8697015}
+      - {x: 5.2697363, y: 0.53886414, z: 3.665863}
+      - {x: 4.924616, y: 0.4409908, z: 4.760676}
+      - {x: 1.0091265, y: 0.42907014, z: 5.2298226}
+      - {x: -2.5504694, y: 0.39039135, z: 5.25877}
+      - {x: -6.3537226, y: 0.34906495, z: 5.289699}
+      - {x: -9.845044, y: 0.2761062, z: 4.8181076}
       - {x: -11.193859, y: 0, z: 4.0703697}
-      - {x: -20.931683, y: -0.6971197, z: 2.7233806}
-      - {x: -27.810299, y: 0.35899353, z: -17.03991}
+      - {x: -12.66783, y: -0.30172607, z: 3.2532494}
+      - {x: -16.210802, y: -0.25494772, z: -1.1411978}
+      - {x: -19.28504, y: -0.14727497, z: -6.0534134}
+      - {x: -22.948805, y: -0.018954502, z: -11.907614}
+      - {x: -25.927916, y: 0.19520143, z: -18.467142}
       isClosed: 1
       space: 0
       controlMode: 0
@@ -1102,6 +1111,9 @@ MonoBehaviour:
         m_Center: {x: 0, y: 0, z: 0}
         m_Extent: {x: 0, y: 0, z: 0}
       perAnchorNormalsAngle:
+      - 0
+      - 0
+      - 0
       - 0
       - 0
       - 0
@@ -1115,7 +1127,7 @@ MonoBehaviour:
     showPerSegmentBounds: 0
     displayAnchorPoints: 1
     displayControlPoints: 1
-    bezierHandleScale: 1
+    bezierHandleScale: 4.87
     globalDisplaySettingsFoldout: 1
     keepConstantHandleSize: 0
     showNormalsInVertexMode: 0
@@ -1501,7 +1513,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -1647,6 +1659,87 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1158421014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1158421017}
+  - component: {fileID: 1158421015}
+  - component: {fileID: 1158421016}
+  m_Layer: 3
+  m_Name: CloseView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!33 &1158421015
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158421014}
+  m_Mesh: {fileID: 0}
+--- !u!23 &1158421016
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158421014}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: f2df4830b48c4e94a817b2a7ac6f4d38, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!4 &1158421017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158421014}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1939286949}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1437961036
 PrefabInstance:
@@ -2266,7 +2359,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -2317,6 +2410,7 @@ GameObject:
   - component: {fileID: 1939286951}
   - component: {fileID: 1939286953}
   - component: {fileID: 1939286954}
+  - component: {fileID: 1939286952}
   m_Layer: 7
   m_Name: Target
   m_TagString: Untagged
@@ -2416,6 +2510,7 @@ Transform:
   m_Children:
   - {fileID: 438767259}
   - {fileID: 464405391}
+  - {fileID: 1158421017}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2462,6 +2557,35 @@ MonoBehaviour:
   edgeDstThreshold: 0.5
   maskCutawayDst: 0.1
   viewMeshFilter: {fileID: 464405389}
+--- !u!114 &1939286952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939286944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b03b1ea45c65e994bb81a0de6f36c47b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLimit: 3
+  material: {fileID: 2100000, guid: f2df4830b48c4e94a817b2a7ac6f4d38, type: 2}
+  viewRadius: 15
+  viewAngle: 90
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
+  visibleTargets: []
+  ChasePlayer: 0
+  meshResolution: 1
+  edgeResolveIterations: 4
+  edgeDstThreshold: 0.5
+  maskCutawayDst: 0.1
+  viewMeshFilter: {fileID: 1158421015}
 --- !u!195 &1939286953
 NavMeshAgent:
   m_ObjectHideFlags: 0

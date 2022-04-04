@@ -4,17 +4,13 @@ using UnityEngine;
 using PathCreation.Examples;
 using PathCreation;
 
-public class FieldOfView : MonoBehaviour
+public class CloseDetect : MonoBehaviour
 {
     float detectSpeed = 1.0f;
     public float timeLimit = 3.0f;
     float timeCount = 0.0f;
-    PathCreator pathCreator;
-    CloseDetect CloseDetect;
     Enemy enemy;
     EnemyNav Enav;
-    EnemyNav[] enemies = null;
-    PathFollower phf;
     [SerializeField]
     Material material;
     public float viewRadius;
@@ -26,6 +22,10 @@ public class FieldOfView : MonoBehaviour
 
     [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
+
+    PathFollower phf;
+    EnemyNav[] enemies = null;
+    public bool ChasePlayer = false;
 
     public float meshResolution;
     public int edgeResolveIterations;
@@ -41,12 +41,10 @@ public class FieldOfView : MonoBehaviour
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
-        phf = GetComponent<PathFollower>();
         Enav = GetComponent<EnemyNav>();
-        enemies = FindObjectsOfType<EnemyNav>();
         enemy = GetComponent<Enemy>();
-        CloseDetect = GetComponent<CloseDetect>();
-        pathCreator = FindObjectOfType<PathCreator>();
+        enemies = FindObjectsOfType<EnemyNav>();
+        phf = GetComponent<PathFollower>();
         StartCoroutine("FindTargetsWithDelay", .1f);
     }
 
@@ -61,48 +59,15 @@ public class FieldOfView : MonoBehaviour
     }
     private void Update()
     {
-        foreach (var target in visibleTargets)
-        {
-            if (target.gameObject.GetComponent<PlayerControllerKeyBoardGamePad>().BeenDeteced)
-            {
-                detectSpeed = 2.0f;
-            }
-
-        }
-
         if (FindVisibleTargets())
         {
-            timeCount += Time.deltaTime * detectSpeed;
-
-        }
-        else
-        {
-            if (timeCount > 0.0f)
-            {
-                timeCount -= Time.deltaTime;
-            }
-
-        }
-
-        if (timeCount >= timeLimit)
-        {
-            timeCount = timeLimit;
             foreach (var enemy in enemies)
             {
                 enemy.ChasePlayer = true;
             }
-
-        }
-        else if (timeCount <= 0.0f)
-        {
-            timeCount = 0.0f;
-
-
         }
 
-        material.color = Color.Lerp(Color.green, Color.red, timeCount / timeLimit);
     }
-
     void LateUpdate()
     {
         DrawFieldOfView();
@@ -112,19 +77,14 @@ public class FieldOfView : MonoBehaviour
     {
         bool FindTarget = false;
         Enav.ChasePlayer = false;
-        //Color color = new Color(0, 255, 0, 0.3f);
-        //material.color = color;
+        Color color = new Color(255, 255, 0, 1.0f);
+        material.color = color;
         visibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
-
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
             Transform target = targetsInViewRadius[i].transform;
-            if ((target.position - transform.position).sqrMagnitude <= CloseDetect.viewRadius * CloseDetect.viewRadius)
-            {
-                return false;
-            }
             Vector3 dirToTarget = (target.position - transform.position).normalized;
             if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
             {
@@ -134,10 +94,11 @@ public class FieldOfView : MonoBehaviour
                     visibleTargets.Add(target);
                     PlayerControllerKeyBoardGamePad player = target.gameObject.GetComponent<PlayerControllerKeyBoardGamePad>();
                     player.BeenDeteced = true;
-                    //Color color2 = new Color(255, 0, 0, 0.3f);
-                    //material.color = color2;
+                    Color color2 = new Color(255, 0, 0, 1.0f);
+                    material.color = color2;
                     FindTarget = true;
                     phf.enabled = false;
+
 
                 }
 
