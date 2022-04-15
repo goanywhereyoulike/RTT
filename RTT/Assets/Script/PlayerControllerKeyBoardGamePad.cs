@@ -17,12 +17,24 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
     public bool BeenDeteced = false;
     public KeyCode dashHotkey = KeyCode.Space;
     public float dashStatrTime;
+    public float dashEndTime = -10.0f;
     public float dashSpeed = 150.0f;
     public float dashTime = 0.25f;
+    public float dashCoolDown = 5.0f;
     private Vector3 dashDir;
     private Vector3 input;
     private Vector3 rawInput;
     [SerializeField] private Animator playerAnimator;
+
+    public KeyCode attackHotkey = KeyCode.J;
+    public bool attackTrigger = false;
+    public float attackStatrTime;
+    public float attackEndTime = -10.0f;
+    public float attackTime = 0.25f;
+    public float attackCoolDown = 5.0f;
+    public GameObject attackHitbox;
+    public int attackDamage = 20;
+    public int stealthDamage = 120;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -36,6 +48,11 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
             rb.velocity = Vector3.zero;
         GetInput();
         LookDir();
+        if (BeenDeteced)
+            attackHitbox.GetComponent<Damage>().damageAmount = attackDamage;
+        else
+            attackHitbox.GetComponent<Damage>().damageAmount = stealthDamage;
+        attackHitbox.SetActive(attackTrigger);
         if (canSprint)
             Sprint();
         SetAnimation();
@@ -46,24 +63,39 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
         bool isMoving = rb.velocity.magnitude > 0;
         bool isRun = moveSpeed == sprintSpeed && isMoving;
         playerAnimator.SetBool("IsWalk", isMoving);
-        playerAnimator.SetBool("IsRun", isRun || dashTrigger);
+        playerAnimator.SetBool("IsRun", isRun); 
+        playerAnimator.SetBool("IsRoll", dashTrigger);
+        playerAnimator.SetBool("IsSlash", attackTrigger);
+        playerAnimator.SetFloat("SlashSpeed", 1.5f / attackTime);
     }
 
     void GetInput()
     {
+        if (Time.time >= attackEndTime)
+            attackTrigger = false;
         //Move Direction Input
-        if(!dashTrigger)
+        if(!dashTrigger && !attackTrigger)
         {
             rawInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
             input = rawInput.normalized;
         }
 
         //Dash Input
-        if (Input.GetKeyDown(dashHotkey))
+        if (Input.GetKeyDown(dashHotkey) && Time.time > dashEndTime + dashCoolDown)
         {
             dashTrigger = true;
             dashStatrTime = Time.time;
+            dashEndTime = Time.time + dashTime;
         }
+
+        if (!dashTrigger && Input.GetKeyDown(attackHotkey) && Time.time > attackEndTime + attackCoolDown)
+        {
+            attackTrigger = true;
+            attackStatrTime = Time.time;
+            attackEndTime = Time.time + attackTime;
+        }
+
+
     }
 
     void Sprint()
@@ -78,7 +110,6 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
         if (Time.time < dashStatrTime + dashTime)
         {
             rb.MovePosition(transform.position + transform.forward * dashSpeed * Time.deltaTime);
-            playerAnimator.SetBool("IsRun", true);
         }
         else
         {
@@ -106,6 +137,10 @@ public class PlayerControllerKeyBoardGamePad : MonoBehaviour
         if (dashTrigger)
         {
             Dash();
+        }
+        else if (attackTrigger)
+        {
+            rb.velocity = Vector3.zero;
         }
         else
         {
